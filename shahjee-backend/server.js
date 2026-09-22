@@ -10,6 +10,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+// 👇 YEH LINE ADD KAREIN
+app.use(express.static(__dirname));
 
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/banners', require('./routes/bannerRoutes'));
