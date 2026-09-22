@@ -8,12 +8,15 @@ connectDB();
 
 const app = express();
 
-// ✅ Fixed CORS Configuration for Vercel & Railway
+// ✅ CORS Options for Vercel
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Pre-flight requests handle karne ke liye
+app.options('*', cors());
 
 app.use(express.json({ limit: '10mb' }));
 
