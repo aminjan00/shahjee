@@ -726,7 +726,7 @@
         `;
 
         try {
-            const response = await fetch('http://localhost:5000/api/products?category=chromebook');
+            const response = await fetch('https://shahjee-production.up.railway.app/api/products?category=chromebook');
             
             if (response.ok) {
                 const result = await response.json();
