@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Shah Jee Laptops Supplier & Wholesale Partner</title>
+    <meta name="description" content="Learn about Shah Jee Laptops Supplier. Premier wholesale laptop exporter & supplier. A-Grade tested inventory, bulk custom specs, and international delivery.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Global CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ==========================================
+         PAGE SPECIFIC STYLES (SELF-CONTAINED)
+    ========================================== -->
+    <style>
+        /* Hero Banner */
+        .about-hero {
+            position: relative;
+            background: var(--color-dark-surface);
+            color: var(--color-white);
+            padding: 80px 24px;
+            text-align: center;
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
+
+        .about-hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.25;
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-badge {
+            display: inline-block;
+            background: var(--color-soft-pink);
+            color: var(--color-dark-main);
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .about-hero-title {
+            font-size: 2.75rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .about-hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--color-border-light);
+            line-height: 1.6;
+        }
+
+        /* Grid Sections */
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .story-image-box {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: var(--glass-border);
+            height: 380px;
+        }
+
+        .story-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-content-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-dark-main);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .story-content-box p {
+            font-size: 1rem;
+            color: var(--color-purple-gray);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        /* Pillars Section */
+        .pillars-section {
+            background: var(--color-white);
+            border: var(--glass-border);
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 80px;
+        }
+
+        .pillars-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+        }
+
+        .pillars-header h2 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--color-dark-main);
+            margin-bottom: 12px;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+        }
+
+        .pillar-card {
+            background: var(--color-off-white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--color-border-light);
+            transition: all var(--transition-fast);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-soft-pink);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .pillar-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            background: var(--color-soft-pink);
+            color: var(--color-dark-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        .pillar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-dark-main);
+            margin-bottom: 8px;
+        }
+
+        .pillar-desc {
+            font-size: 0.925rem;
+            color: var(--color-purple-gray);
+            line-height: 1.6;
+        }
+
+        /* Location & Direct Contact Card */
+        .location-card {
+            background: linear-gradient(135deg, var(--color-dark-surface) 0%, var(--color-dark-main) 100%);
+            color: var(--color-white);
+            border-radius: 24px;
+            padding: 50px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .location-info h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--color-white);
+        }
+
+        .location-info p {
+            font-size: 1rem;
+            color: var(--color-border-light);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .contact-bullets {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-bullet-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .contact-bullet-item i {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-bright-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .btn-about-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--color-whatsapp);
+            color: var(--color-white);
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
+            transition: all var(--transition-fast);
+        }
+
+        .btn-about-whatsapp:hover {
+            background: var(--color-whatsapp-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            .about-hero {
+                padding: 50px 20px;
+                margin-bottom: 40px;
+            }
+
+            .about-hero-title {
+                font-size: 1.85rem;
+            }
+
+            .about-hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                margin-bottom: 50px;
+            }
+
+            .story-image-box {
+                height: 240px;
+            }
+
+            .story-content-box h2 {
+                font-size: 1.5rem;
+            }
+
+            .pillars-section {
+                padding: 30px 20px;
+                margin-bottom: 50px;
+            }
+
+            .pillars-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .location-card {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+                gap: 24px;
+            }
+
+            .location-info h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         SECTION 1 — NAVBAR
+    ========================================== -->
+    <header class="navbar-header" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="images/logo.png" alt="Shah Jee Laptops Supplier Logo" id="site-logo">
+            </a>
+
+            <nav class="desktop-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="dropdown">
+                        <a href="collection/allproducts.html" class="nav-link dropdown-toggle">
+                            Collections <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="collection/allproducts.html">All Products</a></li>
+                            <li><a href="collection/hp.html">HP Laptops</a></li>
+                            <li><a href="collection/dell.html">Dell Laptops</a></li>
+                            <li><a href="collection/lenovo.html">Lenovo Laptops</a></li>
+                            <li><a href="collection/mac.html">MacBooks</a></li>
+                            <li><a href="collection/crombooks.html">Chromebooks</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="index.html#services-section" class="nav-link">Services</a></li>
+                    <li><a href="about.html" class="nav-link active">About Us</a></li>
+                </ul>
+            </nav>
+
+            <div class="navbar-actions">
+                <a href="https://wa.me/971503320561?text=Hello%20Shah%20Jee%20Laptops%20Supplier,%20I%20would%20like%20to%20know%20more%20about%20your%20wholesale%20services." 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn-whatsapp-nav">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Contact WhatsApp</span>
+                </a>
+
+                <button class="mobile-menu-trigger" id="mobile-menu-open" aria-label="Open Mobile Menu">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-drawer-overlay" id="drawer-overlay"></div>
+    <aside class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-header">
+            <span class="drawer-title">Menu</span>
+            <button class="drawer-close-btn" id="mobile-menu-close" aria-label="Close Mobile Menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html" class="mobile-nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li class="mobile-dropdown">
+                    <div class="mobile-dropdown-header" id="mobile-dropdown-toggle">
+                        <span><i class="fa-solid fa-laptop"></i> Collections</span>
+                        <i class="fa-solid fa-chevron-down" id="mobile-dropdown-icon"></i>
+                    </div>
+                    <ul class="mobile-dropdown-menu" id="mobile-dropdown-content">
+                        <li><a href="collection/allproducts.html">All Products</a></li>
+                        <li><a href="collection/hp.html">HP Laptops</a></li>
+                        <li><a href="collection/dell.html">Dell Laptops</a></li>
+                        <li><a href="collection/lenovo.html">Lenovo Laptops</a></li>
+                        <li><a href="collection/mac.html">MacBooks</a></li>
+                        <li><a href="collection/crombooks.html">Chromebooks</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#services-section" class="mobile-nav-link"><i class="fa-solid fa-gears"></i> Services</a></li>
+                <li><a href="about.html" class="mobile-nav-link active"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+            </ul>
+            <div class="drawer-footer">
+                <a href="https://wa.me/971503320561" target="_blank" class="btn-whatsapp-drawer">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </aside>
+
+
+    <!-- ==========================================
+         HERO SECTION
+    ========================================== -->
+    <section class="about-hero">
+        <img src="images/banners/all-products-banner.jpg" alt="Wholesale Laptops Background" class="about-hero-bg" onerror="this.src='images/site/fallback-laptop.jpg'">
+        <div class="about-hero-content">
+            <span class="about-badge">Wholesale & Export Pioneer</span>
+            <h1 class="about-hero-title">Shah Jee Laptops Supplier</h1>
+            <p class="about-hero-subtitle">Delivering high-performance, A-Grade tested business laptops, MacBooks, and custom workstation configurations to bulk buyers and retailers globally.</p>
+        </div>
+    </section>
+
+
+    <main class="section-container">
+
+        <!-- ==========================================
+             STORY SECTION
+        ========================================== -->
+        <section class="story-grid">
+            <div class="story-image-box">
+                <img src="images/site/fallback-laptop.jpg" alt="Shah Jee Laptop Testing Facility" onerror="this.src='images/site/fallback-laptop.jpg'">
+            </div>
+            <div class="story-content-box">
+                <h2>Trusted Quality, Transparent Grading & Reliability</h2>
+                <p>Founded under the leadership of **Khurramjan**, Shah Jee Laptops Supplier has grown into a premier hub for imported wholesale laptops. We specialize in sourcing top-tier enterprise hardware from global markets and making them available for bulk distribution.</p>
+                <p>Every single unit entering our inventory undergoes rigorous multi-point technical testing—ensuring battery health, display panel clarity, motherboard stability, keyboard responsiveness, and port functionality before listing.</p>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             PILLARS OF EXCELLENCE
+        ========================================== -->
+        <section class="pillars-section">
+            <div class="pillars-header">
+                <h2>Why Bulk Buyers Partner With Us</h2>
+                <p style="color: var(--color-purple-gray); font-size: 0.95rem;">We eliminate the guesswork from wholesale laptop procurement with transparent policies and dedicated support.</p>
+            </div>
+
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                    <h3 class="pillar-title">Check Warranty Guarantee</h3>
+                    <p class="pillar-desc">We back our tested stock with a complete check warranty, giving retailers full peace of mind when placing bulk orders.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3 class="pillar-title">Custom RAM & SSD Upgrades</h3>
+                    <p class="pillar-desc">Need custom specs for your client requirements? We configure RAM and high-speed NVMe storage on demand prior to dispatch.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                    <h3 class="pillar-title">Worldwide Cargo & Shipping</h3>
+                    <p class="pillar-desc">Seamless logistics partnership ensuring reliable packing, documentation, and worldwide shipment dispatch.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3 class="pillar-title">Instant Inventory Updates</h3>
+                    <p class="pillar-desc">Get real-time stock notifications, price drops, and video proofs directly via our official WhatsApp channels.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             DIRECT CONTACT & LOCATION BANNER
+        ========================================== -->
+        <section class="location-card">
+            <div class="location-info">
+                <h2>Direct Wholesale Inquiries</h2>
+                <p>Looking to order bulk inventory, request live video proof of stock, or discuss custom order pricing? Reach out to Khurramjan directly.</p>
+                <a href="https://wa.me/971503320561?text=Hello%20Shah%20Jee%20Laptops%20Supplier,%20I%20want%20to%20discuss%20a%20bulk%20order." target="_blank" class="btn-about-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Start WhatsApp Inquiry
+                </a>
+            </div>
+
+            <div class="contact-bullets">
+                <div class="contact-bullet-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Direct Call / WhatsApp: +971 50 332 0561</span>
+                </div>
+                <div class="contact-bullet-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Official Email: khurramjan@gmail.com</span>
+                </div>
+                <div class="contact-bullet-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Headquarters & Warehousing: UAE & Global Distribution</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+    <footer class="site-footer">
+        <div class="footer-overlay"></div>
+        <div class="footer-container">
+            <div class="footer-main-grid">
+                <div class="footer-col brand-col">
+                    <img src="images/logo.png" alt="Shah Jee Logo" class="footer-logo">
+                    <h3 class="footer-brand-title">Shah Jee Laptops Supplier / Khurramjan</h3>
+                    <p class="footer-brand-desc">Your trusted wholesale laptop partner. Tested A-Grade inventory and custom specs available for bulk buyers.</p>
+                </div>
+                <div class="footer-col links-col">
+                    <h4 class="footer-col-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="collection/allproducts.html">All Products Catalog</a></li>
+                        <li><a href="collection/hp.html">HP Laptops</a></li>
+                        <li><a href="collection/dell.html">Dell Laptops</a></li>
+                        <li><a href="collection/lenovo.html">Lenovo Laptops</a></li>
+                        <li><a href="collection/mac.html">MacBooks</a></li>
+                        <li><a href="collection/crombooks.html">Chromebooks</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col social-links-col">
+                    <h4 class="footer-col-title">Social Platforms</h4>
+                    <ul class="footer-menu">
+                        <li><a href="https://tiktok.com/@shahjeelaptops" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></li>
+                        <li><a href="https://instagram.com/shahjeelaptops" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+                        <li><a href="https://facebook.com/shahjeelaptops.official" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
+                        <li><a href="https://wa.me/971503320561" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-col">
+                    <h4 class="footer-col-title">Direct Contact</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <div>
+                                <span>Phone / WhatsApp:</span>
+                                <a href="https://wa.me/971503320561" target="_blank">+971 50 332 0561</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <div>
+                                <span>Email Address:</span>
+                                <a href="mailto:khurramjan@gmail.com">khurramjan@gmail.com</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Shah Jee Laptops Supplier / Khurramjan. All Rights Reserved.</p>
+                <div class="footer-admin-link">
+                    <a href="admin.html"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==========================================
+         PAGE LOGIC
+    ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Drawer
+            const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
+            const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            const mobileDropdownToggle = document.getElementById('mobile-dropdown-toggle');
+            const mobileDropdownContent = document.getElementById('mobile-dropdown-content');
+
+            if (mobileMenuOpenBtn) {
+                mobileMenuOpenBtn.addEventListener('click', () => {
+                    mobileDrawer.classList.add('active');
+                    drawerOverlay.classList.add('active');
+                });
+            }
+
+            const closeDrawer = () => {
+                if (mobileDrawer) mobileDrawer.classList.remove('active');
+                if (drawerOverlay) drawerOverlay.classList.remove('active');
+            };
+
+            if (mobileMenuCloseBtn) mobileMenuCloseBtn.addEventListener('click', closeDrawer);
+            if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+            if (mobileDropdownToggle) {
+                mobileDropdownToggle.addEventListener('click', () => {
+                    mobileDropdownToggle.classList.toggle('active');
+                    mobileDropdownContent.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

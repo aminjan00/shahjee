@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Shah Jee Laptops Supplier</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        :root {
+            --color-dark-main: #1D1B24;
+            --color-dark-surface: #13111A;
+            --color-soft-pink: #E8A5C8;
+            --color-lime-green: #A8C23D;
+            --color-bright-yellow: #F5E050;
+            --color-purple-gray: #524F61;
+            --color-off-white: #F8F6F9;
+            --color-white: #FFFFFF;
+            --color-border-light: #EFEBF0;
+            --color-whatsapp: #25D366;
+            --color-danger: #DC3545;
+        }
+
+        body { 
+            background-color: var(--color-off-white); 
+            color: var(--color-dark-main); 
+            min-height: 100vh;
+        }
+
+        /* Universal Overflow Control */
+        body, html {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Top Admin Header */
+        .admin-header {
+            background: var(--color-dark-main); 
+            color: #fff; 
+            padding: 15px 5%;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-brand { 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .admin-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: #fff;
+            padding: 2px;
+        }
+
+        .admin-brand span { color: var(--color-bright-yellow); }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .view-site-link {
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 0.88rem; 
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.12); 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-site-link:hover { 
+            background: var(--color-soft-pink); 
+            color: var(--color-dark-main);
+        }
+
+        .btn-logout-head {
+            background: var(--color-danger);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout-head:hover { background: #b02a37; }
+
+        /* Main Container 2-Column Layout */
+        .admin-container {
+            max-width: 1350px; 
+            margin: 30px auto; 
+            padding: 0 20px;
+            display: grid; 
+            grid-template-columns: 380px 1fr; 
+            gap: 25px;
+        }
+
+        /* Admin Cards */
+        .admin-card {
+            background: #fff; 
+            border-radius: 16px; 
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
+            border: 1px solid var(--color-border-light);
+            margin-bottom: 25px;
+        }
+
+        .admin-card h2 {
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            margin-bottom: 18px; 
+            color: var(--color-dark-main);
+            border-bottom: 3px solid var(--color-lime-green); 
+            padding-bottom: 6px; 
+            display: inline-block;
+        }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; color: var(--color-dark-main); }
+        
+        .form-control {
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid var(--color-border-light); 
+            border-radius: 8px;
+            font-size: 0.9rem; 
+            outline: none; 
+            transition: 0.3s; 
+            background: var(--color-off-white);
+            color: var(--color-dark-main);
+        }
+
+        .form-control:focus { 
+            border-color: var(--color-lime-green); 
+            box-shadow: 0 0 0 3px rgba(168, 194, 61, 0.2); 
+            background: #fff;
+        }
+
+        textarea.form-control { resize: vertical; min-height: 80px; }
+
+        .file-upload-box {
+            border: 2px dashed var(--color-soft-pink); 
+            padding: 14px; 
+            border-radius: 10px;
+            text-align: center; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            background: rgba(232, 165, 200, 0.05);
+        }
+
+        .file-upload-box:hover { 
+            border-color: var(--color-lime-green); 
+            background: rgba(168, 194, 61, 0.08); 
+        }
+
+        .file-upload-box i { font-size: 1.6rem; color: var(--color-purple-gray); margin-bottom: 4px; }
+
+        .preview-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .preview-img { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; border: 1px solid var(--color-border-light); }
+
+        .btn-submit {
+            width: 100%; 
+            padding: 12px; 
+            background: var(--color-dark-main); 
+            color: var(--color-bright-yellow);
+            border: none; 
+            border-radius: 8px; 
+            font-weight: 800; 
+            font-size: 0.95rem;
+            cursor: pointer; 
+            transition: 0.3s; 
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover { 
+            background: var(--color-purple-gray); 
+            color: #fff;
+        }
+
+        /* Search & Category Filter Tabs Controls */
+        .controls-wrapper {
+            display: flex; 
+            gap: 15px; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-bottom: 20px; 
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative; 
+            flex: 1; 
+            min-width: 220px;
+        }
+
+        .search-box input {
+            width: 100%; 
+            padding: 10px 12px 10px 38px; 
+            border: 1px solid var(--color-border-light);
+            border-radius: 8px; 
+            outline: none; 
+            font-size: 0.9rem;
+            background: var(--color-off-white);
+        }
+
+        .search-box input:focus {
+            border-color: var(--color-lime-green);
+            background: #fff;
+        }
+
+        .search-box i {
+            position: absolute; 
+            left: 12px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--color-purple-gray);
+        }
+
+        .category-tabs {
+            display: flex; 
+            gap: 8px; 
+            overflow-x: auto; 
+            padding-bottom: 4px;
+        }
+
+        .tab-btn {
+            padding: 8px 14px; 
+            border: 1px solid var(--color-border-light); 
+            background: var(--color-off-white); 
+            border-radius: 20px;
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            white-space: nowrap; 
+            transition: 0.3s;
+            color: var(--color-dark-main);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--color-dark-main); 
+            color: var(--color-bright-yellow); 
+            border-color: var(--color-dark-main);
+        }
+
+        /* Tables */
+        .table-responsive { overflow-x: auto; max-height: 520px; }
+
+        .product-table {
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #fff;
+            border-radius: 12px; 
+            overflow: hidden;
+        }
+
+        .product-table th, .product-table td {
+            padding: 12px 15px; 
+            text-align: left; 
+            border-bottom: 1px solid var(--color-border-light); 
+            font-size: 0.88rem;
+        }
+
+        .product-table th { 
+            background: var(--color-dark-main); 
+            color: #fff; 
+            font-weight: 700; 
+            position: sticky; 
+            top: 0; 
+            z-index: 5; 
+        }
+
+        .product-table img { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 8px; 
+            object-fit: cover; 
+            background: var(--color-off-white);
+        }
+
+        .badge-cat {
+            background: var(--color-soft-pink);
+            color: var(--color-dark-main);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .action-btns { display: flex; gap: 6px; }
+
+        .btn-action {
+            border: none; 
+            padding: 6px 10px; 
+            border-radius: 6px; 
+            cursor: pointer;
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-delete { background: rgba(220, 53, 69, 0.1); color: var(--color-danger); }
+        .btn-delete:hover { background: var(--color-danger); color: #fff; }
+
+        .btn-edit { background: rgba(168, 194, 61, 0.2); color: var(--color-dark-main); }
+        .btn-edit:hover { background: var(--color-lime-green); }
+
+        /* Responsive Mobile Adjustments */
+        @media (max-width: 900px) { 
+            .admin-container { 
+                grid-template-columns: 1fr !important; 
+                padding: 10px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 15px;
+                text-align: center;
+            }
+
+            .admin-container > div, .admin-card, form {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .controls-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <a href="index.html" class="admin-brand">
+            <img src="images/logo.png" alt="Shah Jee Logo" onerror="this.src='https://via.placeholder.com/40'">
+            <div>Shah Jee <span>Laptops</span> Admin Panel</div>
+        </a>
+        <div class="header-actions">
+            <a href="index.html" class="view-site-link" target="_blank"><i class="fa-solid fa-globe"></i> View Website</a>
+            <button class="btn-logout-head" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="admin-container">
+        
+        <!-- Left Side Forms (Laptop Product + Offer Banner Upload) -->
+        <div class="forms-wrapper">
+            
+            <!-- 1. Offer / Banner Post Upload Form -->
+            <div class="admin-card">
+                <h2>Add Offer / Banner Post</h2>
+                <form id="bannerForm">
+                    <div class="form-group">
+                        <label>Banner Post Image</label>
+                        <div class="file-upload-box" onclick="document.getElementById('bImgFile').click()">
+                            <i class="fa-solid fa-rectangle-ad"></i>
+                            <p style="font-size:0.8rem; color:var(--color-purple-gray);">Choose Banner Image</p>
+                        </div>
+                        <input type="file" id="bImgFile" accept="image/*" style="display:none;" onchange="previewBannerImg(event)">
+                        <div class="preview-container" id="bannerImgPreviewBox"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Link / URL (Optional)</label>
+                        <input type="url" class="form-control" id="bTargetLink" placeholder="https://example.com/offer or collection/hp.html">
+                    </div>
+
+                    <button type="submit" class="btn-submit"><i class="fa-solid fa-upload"></i> Upload Banner</button>
+                </form>
+            </div>
+
+            <!-- 2. Laptop Product Upload Form -->
+            <div class="admin-card">
+                <h2 id="formHeading">Add New Laptop</h2>
+                <form id="productForm">
+                    <input type="hidden" id="editProductId">
+
+                    <div class="form-group">
+                        <label>Collection / Category *</label>
+                        <select class="form-control" id="pCategory" required>
+                            <option value="hp">HP Laptops</option>
+                            <option value="dell">Dell Laptops</option>
+                            <option value="lenovo">Lenovo Laptops</option>
+                            <option value="mac">MacBooks</option>
+                            <option value="chromebook">Chromebooks</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Laptop Title / Model *</label>
+                        <input type="text" class="form-control" id="pTitle" placeholder="e.g. HP EliteBook 840 G8" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Brand Name *</label>
+                        <input type="text" class="form-control" id="pBrand" placeholder="e.g. HP, Dell, Lenovo, Apple" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price (AED) *</label>
+                        <input type="number" class="form-control" id="pPrice" placeholder="e.g. 1850" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Available Stock Quantity *</label>
+                        <input type="number" class="form-control" id="pQty" placeholder="e.g. 10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Main Product Image</label>
+                        <div class="file-upload-box" onclick="document.getElementById('pMainFile').click()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p style="font-size:0.8rem; color:var(--color-purple-gray);">Choose main laptop image</p>
+                        </div>
+                        <input type="file" id="pMainFile" accept="image/*" style="display:none;" onchange="previewMainImg(event)">
+                        <div class="preview-container" id="mainImgPreviewBox"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Additional Angle Images</label>
+                        <div class="file-upload-box" onclick="document.getElementById('pAngleFiles').click()">
+                            <i class="fa-solid fa-images"></i>
+                            <p style="font-size:0.8rem; color:var(--color-purple-gray);">Choose additional angle images</p>
+                        </div>
+                        <input type="file" id="pAngleFiles" accept="image/*" multiple style="display:none;" onchange="previewAngleImgs(event)">
+                        <div class="preview-container" id="angleImgsPreviewBox"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Specifications & Description</label>
+                        <textarea class="form-control" id="pDesc" placeholder="Processor, RAM, SSD, Display, Grade A tested condition..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="saveBtn"><i class="fa-solid fa-plus"></i> Save Laptop Product</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Right Side Data Tables (Banner Inventory + Laptop Inventory) -->
+        <div class="tables-wrapper">
+            
+            <!-- Active Banners List -->
+            <div class="admin-card">
+                <h2>Active Offer Banners</h2>
+                <div class="table-responsive">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Banner Image</th>
+                                <th>Target Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bannerTableBody">
+                            <!-- Banners render here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Laptop Inventory List -->
+            <div class="admin-card">
+                <h2>Laptop Inventory Catalog</h2>
+
+                <!-- Search & Collection Filters -->
+                <div class="controls-wrapper">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Search laptop title or brand..." onkeyup="fetchProducts()">
+                    </div>
+                    <div class="category-tabs">
+                        <button class="tab-btn active" onclick="setCategoryFilter('all', this)">All</button>
+                        <button class="tab-btn" onclick="setCategoryFilter('hp', this)">HP</button>
+                        <button class="tab-btn" onclick="setCategoryFilter('dell', this)">Dell</button>
+                        <button class="tab-btn" onclick="setCategoryFilter('lenovo', this)">Lenovo</button>
+                        <button class="tab-btn" onclick="setCategoryFilter('mac', this)">MacBook</button>
+                        <button class="tab-btn" onclick="setCategoryFilter('chromebook', this)">Chromebook</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title / Model</th>
+                                <th>Collection</th>
+                                <th>Price (AED)</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <!-- Products render here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+   <!-- JavaScript Logic with Real MongoDB + Cloudinary Backend Integration -->
+    <script>
+        // Configuration Constants
+        const API_URL = "http://localhost:5000/api/products";
+        const BANNER_API_URL = "http://localhost:5000/api/banners";
+
+        // Verified Cloudinary Credentials
+        const CLOUD_NAME = "ez2dqiwx";
+        const UPLOAD_PRESET = "laptop-products"; 
+
+        // Auth Check Guard
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin.html';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminToken');
+            window.location.href = 'admin.html';
+        });
+
+        let mainImageUrl = "";
+        let angleImageUrls = [];
+        let bannerUploadedUrl = "";
+        let currentCategoryFilter = "all";
+
+        /* --------------------------------------------------
+           Cloudinary Direct Image Upload + Auto-Compression
+        -------------------------------------------------- */
+        async function uploadToCloudinary(file) {
+            // Compress image to 1200px max width before uploading
+            const compressedFile = await new Promise((resolve) => {
+                if (!file.type.startsWith('image/')) return resolve(file);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        const MAX_WIDTH = 1200;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > MAX_WIDTH) {
+                            height = Math.round((height * MAX_WIDTH) / width);
+                            width = MAX_WIDTH;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            if (!blob) return resolve(file);
+                            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+                        }, "image/jpeg", 0.75);
+                    };
+                    img.onerror = () => resolve(file);
+                };
+                reader.onerror = () => resolve(file);
+            });
+
+            const formData = new FormData();
+            formData.append("file", compressedFile);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                console.error("Cloudinary Error Detail:", errData);
+                throw new Error(errData.error?.message || "Upload failed");
+            }
+
+            const data = await res.json();
+            return data.secure_url;
+        }
+
+        /* --------------------------------------------------
+           1. Image Preview & Upload Handlers
+        -------------------------------------------------- */
+        window.previewBannerImg = async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const previewBox = document.getElementById("bannerImgPreviewBox");
+            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading banner to Cloudinary...</p>`;
+
+            try {
+                bannerUploadedUrl = await uploadToCloudinary(file);
+                previewBox.innerHTML = `<img src="${bannerUploadedUrl}" class="preview-img">`;
+            } catch (err) {
+                alert(`Banner Upload Failed: ${err.message}`);
+                previewBox.innerHTML = "";
+            }
+        };
+
+        window.previewMainImg = async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const previewBox = document.getElementById("mainImgPreviewBox");
+            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading main image...</p>`;
+
+            try {
+                mainImageUrl = await uploadToCloudinary(file);
+                previewBox.innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
+            } catch (err) {
+                alert(`Main Image Upload Failed: ${err.message}`);
+                previewBox.innerHTML = "";
+            }
+        };
+
+        window.previewAngleImgs = async function(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+
+            angleImageUrls = [];
+            const previewBox = document.getElementById("angleImgsPreviewBox");
+            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading ${files.length} images...</p>`;
+
+            try {
+                angleImageUrls = await Promise.all(files.map(file => uploadToCloudinary(file)));
+                previewBox.innerHTML = "";
+                angleImageUrls.forEach(url => {
+                    previewBox.innerHTML += `<img src="${url}" class="preview-img">`;
+                });
+            } catch (err) {
+                alert(`Angle Images Upload Failed: ${err.message}`);
+                previewBox.innerHTML = "";
+            }
+        };
+
+        /* --------------------------------------------------
+           2. Banner Management (MongoDB Real API)
+        -------------------------------------------------- */
+        document.getElementById("bannerForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            if (!bannerUploadedUrl) {
+                alert("Please select and upload a banner image first!");
+                return;
+            }
+
+            const bannerData = {
+                imageUrl: bannerUploadedUrl,
+                linkUrl: document.getElementById("bTargetLink").value || "collection/allproducts.html"
+            };
+
+            try {
+                const res = await fetch(BANNER_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bannerData)
+                });
+
+                if (res.ok) {
+                    alert("Offer Banner Created Successfully!");
+                    this.reset();
+                    bannerUploadedUrl = "";
+                    document.getElementById("bannerImgPreviewBox").innerHTML = "";
+                    fetchBanners();
+                } else {
+                    alert("Failed to save banner to database.");
+                }
+            } catch (err) {
+                alert("Backend Connection Error! Is node server.js running?");
+            }
+        });
+
+        async function fetchBanners() {
+            try {
+                const res = await fetch(BANNER_API_URL);
+                if (!res.ok) return;
+
+                const result = await res.json();
+                const tbody = document.getElementById("bannerTableBody");
+                tbody.innerHTML = "";
+
+                const banners = result.data || [];
+                if (banners.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px;">No Banners In Database</td></tr>`;
+                    return;
+                }
+
+                banners.forEach(b => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${b.imageUrl}" alt="Banner" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
+                            <td><a href="${b.linkUrl}" target="_blank" style="color:var(--color-dark-main); font-weight:700;">${b.linkUrl}</a></td>
+                            <td>
+                                <button class="btn-action btn-delete" onclick="deleteBanner('${b._id}')">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Fetch Banners Error:", err);
+            }
+        }
+
+        window.deleteBanner = async function(id) {
+            if (confirm("Are you sure you want to delete this offer banner?")) {
+                try {
+                    const res = await fetch(`${BANNER_API_URL}/${id}`, { method: "DELETE" });
+                    if (res.ok) fetchBanners();
+                } catch (err) {
+                    alert("Delete banner error");
+                }
+            }
+        };
+
+        /* --------------------------------------------------
+           3. Product Management (MongoDB Real API)
+        -------------------------------------------------- */
+        async function fetchProducts() {
+            try {
+                const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
+                const tbody = document.getElementById("inventoryTableBody");
+
+                const res = await fetch(`${API_URL}?category=${currentCategoryFilter}`);
+                if (!res.ok) return;
+
+                const result = await res.json();
+                let products = result.data || [];
+
+                tbody.innerHTML = "";
+
+                if (searchQuery) {
+                    products = products.filter(p => 
+                        p.title.toLowerCase().includes(searchQuery) || 
+                        (p.brand && p.brand.toLowerCase().includes(searchQuery))
+                    );
+                }
+
+                if (products.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-purple-gray);">No Laptops Found in Database</td></tr>`;
+                    return;
+                }
+
+                products.forEach(p => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${p.mainImg || 'images/site/fallback-laptop.jpg'}" alt="${p.title}" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
+                            <td><strong>${p.title}</strong></td>
+                            <td><span class="badge-cat">${p.category}</span></td>
+                            <td style="font-weight:800;">AED ${parseFloat(p.price).toLocaleString()}</td>
+                            <td style="font-weight:700;">${p.quantity} Units</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-action btn-edit" onclick="editProduct('${p._id}', '${p.title}', '${p.brand}', '${p.category}', '${p.price}', '${p.quantity}', '${p.mainImg}', \`${p.desc || ''}\`)"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button class="btn-action btn-delete" onclick="deleteProduct('${p._id}')"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Fetch Products Error:", err);
+            }
+        }
+
+        window.setCategoryFilter = function(cat, btn) {
+            currentCategoryFilter = cat;
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            fetchProducts();
+        };
+
+        window.editProduct = function(id, title, brand, category, price, quantity, mainImg, desc) {
+            document.getElementById("editProductId").value = id;
+            document.getElementById("pCategory").value = category;
+            document.getElementById("pTitle").value = title;
+            document.getElementById("pBrand").value = brand;
+            document.getElementById("pPrice").value = price;
+            document.getElementById("pQty").value = quantity;
+            document.getElementById("pDesc").value = desc;
+
+            mainImageUrl = mainImg;
+            if (mainImageUrl) {
+                document.getElementById("mainImgPreviewBox").innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
+            }
+
+            document.getElementById("formHeading").textContent = "Edit Laptop Details";
+            document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-check"></i> Update Laptop Product`;
+        };
+
+        window.deleteProduct = async function(id) {
+            if (confirm("Are you sure you want to delete this laptop from MongoDB database?")) {
+                try {
+                    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+                    if (res.ok) fetchProducts();
+                } catch (err) {
+                    alert("Delete error");
+                }
+            }
+        };
+
+        document.getElementById("productForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            if (!mainImageUrl) {
+                alert("Please select and upload a main image!");
+                return;
+            }
+
+            const editId = document.getElementById("editProductId").value;
+            const productData = {
+                category: document.getElementById("pCategory").value,
+                title: document.getElementById("pTitle").value.trim(),
+                brand: document.getElementById("pBrand").value.trim(),
+                price: parseFloat(document.getElementById("pPrice").value) || 0,
+                quantity: parseInt(document.getElementById("pQty").value) || 0,
+                mainImg: mainImageUrl,
+                angles: angleImageUrls,
+                desc: document.getElementById("pDesc").value.trim()
+            };
+
+            try {
+                let res;
+                if (editId) {
+                    res = await fetch(`${API_URL}/${editId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(productData)
+                    });
+                } else {
+                    res = await fetch(API_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(productData)
+                    });
+                }
+
+                if (res.ok) {
+                    alert(editId ? "Laptop Updated Successfully!" : "Laptop Saved to MongoDB Successfully!");
+                    
+                    this.reset();
+                    document.getElementById("editProductId").value = "";
+                    mainImageUrl = "";
+                    angleImageUrls = [];
+                    document.getElementById("mainImgPreviewBox").innerHTML = "";
+                    document.getElementById("angleImgsPreviewBox").innerHTML = "";
+                    document.getElementById("formHeading").textContent = "Add New Laptop";
+                    document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-plus"></i> Save Laptop Product`;
+
+                    fetchProducts();
+                } else {
+                    alert("Failed to save product.");
+                }
+            } catch (err) {
+                alert("Backend Connection Error!");
+            }
+        });
+
+        // Initialize Data on Page Load
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchBanners();
+            fetchProducts();
+        });
+    </script>
+</body>
+</html>
