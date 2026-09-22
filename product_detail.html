@@ -740,7 +740,7 @@ ${custMsg}`;
 
             try {
                 if (productId) {
-                    const response = await fetch(`http://shahjee-production.up.railway.app/api/products/${productId}`);
+                    const response = await fetch(`http://localhost:5000/api/products/${productId}`);
                     if (response.ok) {
                         const result = await response.json();
                         foundProduct = result.data || result;
