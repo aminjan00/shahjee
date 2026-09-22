@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP Laptops Collection | Shah Jee Laptops Supplier</title>
+    <meta name="description" content="Explore our imported A-Grade tested HP laptops inventory. HP EliteBook, Spectre, ProBook & ZBook workstations with check warranty.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../images/logo.png">
+
+    <!-- Global CSS Files -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ==========================================
+         PAGE SPECIFIC STYLES (SELF-CONTAINED)
+    ========================================== -->
+    <style>
+        /* Page Banner */
+        .collection-banner-section {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+            background: var(--color-dark-surface);
+            margin-bottom: 40px;
+        }
+
+        .collection-banner-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.6;
+        }
+
+        .collection-banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(29,27,36,0.9) 0%, rgba(29,27,36,0.4) 100%);
+            display: flex;
+            align-items: center;
+        }
+
+        .collection-banner-content {
+            max-width: var(--max-width);
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            color: var(--color-white);
+        }
+
+        .collection-badge {
+            display: inline-block;
+            background-color: var(--color-soft-pink);
+            color: var(--color-dark-main);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .collection-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-white);
+        }
+
+        /* Filter & Sort Bar */
+        .filter-sort-bar {
+            background: var(--color-white);
+            border: var(--glass-border);
+            border-radius: 16px;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .results-count {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-purple-gray);
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sort-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-dark-main);
+        }
+
+        .sort-select {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--color-soft-pink);
+            background: var(--color-off-white);
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--color-dark-main);
+            outline: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .sort-select:focus {
+            border-color: var(--color-lime-green);
+            box-shadow: 0 0 0 3px rgba(168, 194, 61, 0.2);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--color-white);
+            border-radius: 16px;
+            border: var(--glass-border);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--color-soft-pink);
+        }
+
+        .product-card-image {
+            width: 100%;
+            height: 200px;
+            background: var(--color-light-gray);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-card-image img {
+            transform: scale(1.06);
+        }
+
+        .product-badge-qty {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--color-dark-main);
+            color: var(--color-bright-yellow);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .product-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-brand-model {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--color-purple-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-dark-main);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .product-price-box {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .price-currency {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-purple-gray);
+        }
+
+        .price-amount {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--color-dark-main);
+        }
+
+        .btn-view-product {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background: var(--color-off-white);
+            border: 1px solid var(--color-soft-pink);
+            color: var(--color-dark-main);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-view-product:hover {
+            background: var(--color-lime-green);
+            border-color: var(--color-lime-green);
+        }
+
+        /* Loading, Error & Empty States */
+        .state-container {
+            grid-column: 1 / -1;
+            padding: 60px 20px;
+            text-align: center;
+            background: var(--color-white);
+            border-radius: 16px;
+            border: var(--glass-border);
+        }
+
+        .state-icon {
+            font-size: 2.5rem;
+            color: var(--color-purple-gray);
+            margin-bottom: 12px;
+        }
+
+        .state-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .state-desc {
+            font-size: 0.95rem;
+            color: var(--color-purple-gray);
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            .collection-banner-section {
+                height: 120px;
+                margin-bottom: 24px;
+            }
+
+            .collection-title {
+                font-size: 1.35rem;
+            }
+
+            .filter-sort-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 12px 16px;
+            }
+
+            .sort-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .product-card-image {
+                height: 130px;
+            }
+
+            .product-card-body {
+                padding: 12px;
+            }
+
+            .product-name {
+                font-size: 0.925rem;
+            }
+
+            .price-amount {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         SECTION 1 — NAVBAR
+    ========================================== -->
+    <header class="navbar-header" id="navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="navbar-logo">
+                <img src="../images/logo.png" alt="Shah Jee Laptops Supplier Logo" id="site-logo">
+            </a>
+
+            <nav class="desktop-nav">
+                <ul class="nav-links">
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="allproducts.html" class="nav-link dropdown-toggle active">
+                            Collections <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="allproducts.html">All Products</a></li>
+                            <li><a href="hp.html">HP Laptops</a></li>
+                            <li><a href="dell.html">Dell Laptops</a></li>
+                            <li><a href="lenovo.html">Lenovo Laptops</a></li>
+                            <li><a href="mac.html">MacBooks</a></li>
+                            <li><a href="crombooks.html">Chromebooks</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="../index.html#services-section" class="nav-link">Services</a></li>
+                    <li><a href="../about.html" class="nav-link">About Us</a></li>
+                </ul>
+            </nav>
+
+            <div class="navbar-actions">
+                <a href="https://wa.me/971503320561?text=Hello%20Shah%20Jee%20Laptops%20Supplier,%20I%20am%20interested%20in%20HP%20Laptops." 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn-whatsapp-nav">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Contact WhatsApp</span>
+                </a>
+
+                <button class="mobile-menu-trigger" id="mobile-menu-open" aria-label="Open Mobile Menu">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-drawer-overlay" id="drawer-overlay"></div>
+    <aside class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-header">
+            <span class="drawer-title">Menu</span>
+            <button class="drawer-close-btn" id="mobile-menu-close" aria-label="Close Mobile Menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <ul class="mobile-nav-links">
+                <li><a href="../index.html" class="mobile-nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li class="mobile-dropdown">
+                    <div class="mobile-dropdown-header" id="mobile-dropdown-toggle">
+                        <span><i class="fa-solid fa-laptop"></i> Collections</span>
+                        <i class="fa-solid fa-chevron-down" id="mobile-dropdown-icon"></i>
+                    </div>
+                    <ul class="mobile-dropdown-menu" id="mobile-dropdown-content">
+                        <li><a href="allproducts.html">All Products</a></li>
+                        <li><a href="hp.html">HP Laptops</a></li>
+                        <li><a href="dell.html">Dell Laptops</a></li>
+                        <li><a href="lenovo.html">Lenovo Laptops</a></li>
+                        <li><a href="mac.html">MacBooks</a></li>
+                        <li><a href="crombooks.html">Chromebooks</a></li>
+                    </ul>
+                </li>
+                <li><a href="../index.html#services-section" class="mobile-nav-link"><i class="fa-solid fa-gears"></i> Services</a></li>
+                <li><a href="../about.html" class="mobile-nav-link"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+            </ul>
+            <div class="drawer-footer">
+                <a href="https://wa.me/971503320561" target="_blank" class="btn-whatsapp-drawer">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </aside>
+
+
+    <!-- ==========================================
+         PAGE BANNER
+    ========================================== -->
+    <section class="collection-banner-section">
+        <img src="../images/banners/hp-banner.jpg" alt="HP Laptops Header Banner" class="collection-banner-bg" onerror="this.src='../images/site/fallback-laptop.jpg'">
+        <div class="collection-banner-overlay">
+            <div class="collection-banner-content">
+                <span class="collection-badge">Official Collection</span>
+                <h1 class="collection-title">HP Laptops Inventory</h1>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ==========================================
+         MAIN PRODUCT CATALOG & FILTERS
+    ========================================== -->
+    <main class="section-container">
+        
+        <!-- Filter and Sort Controls -->
+        <div class="filter-sort-bar">
+            <div class="results-count" id="results-count">Showing 0 HP Products</div>
+            <div class="sort-controls">
+                <label for="sort-select" class="sort-label">Sort By:</label>
+                <select id="sort-select" class="sort-select">
+                    <option value="default">Featured</option>
+                    <option value="price-low">Price: Low → High</option>
+                    <option value="price-high">Price: High → Low</option>
+                    <option value="qty-high">Available Stock: High → Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="product-grid">
+            <!-- Dynamic products will render here via JS -->
+        </div>
+
+    </main>
+
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+    <footer class="site-footer">
+        <div class="footer-overlay"></div>
+        <div class="footer-container">
+            <div class="footer-main-grid">
+                <div class="footer-col brand-col">
+                    <img src="../images/logo.png" alt="Shah Jee Logo" class="footer-logo">
+                    <h3 class="footer-brand-title">Shah Jee Laptops Supplier / Khurramjan</h3>
+                    <p class="footer-brand-desc">Your trusted wholesale laptop partner. Tested A-Grade HP stock and custom specs available for bulk buyers.</p>
+                </div>
+                <div class="footer-col links-col">
+                    <h4 class="footer-col-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="allproducts.html">All Products Catalog</a></li>
+                        <li><a href="hp.html">HP Laptops</a></li>
+                        <li><a href="dell.html">Dell Laptops</a></li>
+                        <li><a href="lenovo.html">Lenovo Laptops</a></li>
+                        <li><a href="mac.html">MacBooks</a></li>
+                        <li><a href="crombooks.html">Chromebooks</a></li>
+                        <li><a href="../about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col social-links-col">
+                    <h4 class="footer-col-title">Social Platforms</h4>
+                    <ul class="footer-menu">
+                        <li><a href="https://tiktok.com/@shahjeelaptops" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></li>
+                        <li><a href="https://instagram.com/shahjeelaptops" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+                        <li><a href="https://facebook.com/shahjeelaptops.official" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
+                        <li><a href="https://wa.me/971503320561" target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col contact-col">
+                    <h4 class="footer-col-title">Direct Contact</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <div>
+                                <span>Phone / WhatsApp:</span>
+                                <a href="https://wa.me/971503320561" target="_blank">+971 50 332 0561</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <div>
+                                <span>Email Address:</span>
+                                <a href="mailto:khurramjan@gmail.com">khurramjan@gmail.com</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Shah Jee Laptops Supplier / Khurramjan. All Rights Reserved.</p>
+                <div class="footer-admin-link">
+                    <a href="../admin.html"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==========================================
+         PAGE LOGIC & API INTEGRATION (SELF-CONTAINED)
+    ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Mobile Drawer Toggle
+            const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
+            const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            const mobileDropdownToggle = document.getElementById('mobile-dropdown-toggle');
+            const mobileDropdownContent = document.getElementById('mobile-dropdown-content');
+
+            if (mobileMenuOpenBtn) {
+                mobileMenuOpenBtn.addEventListener('click', () => {
+                    mobileDrawer.classList.add('active');
+                    drawerOverlay.classList.add('active');
+                });
+            }
+
+            const closeDrawer = () => {
+                if (mobileDrawer) mobileDrawer.classList.remove('active');
+                if (drawerOverlay) drawerOverlay.classList.remove('active');
+            };
+
+            if (mobileMenuCloseBtn) mobileMenuCloseBtn.addEventListener('click', closeDrawer);
+            if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+            if (mobileDropdownToggle) {
+                mobileDropdownToggle.addEventListener('click', () => {
+                    mobileDropdownToggle.classList.toggle('active');
+                    mobileDropdownContent.classList.toggle('active');
+                });
+            }
+
+            // Products Logic
+            const productGrid = document.getElementById('product-grid');
+            const resultsCount = document.getElementById('results-count');
+            const sortSelect = document.getElementById('sort-select');
+
+            let hpProducts = [];
+
+            // Fallback Demo Products for Testing before Backend API connection
+            const demoHpProducts = [
+                {
+                    _id: "hp-101",
+                    name: "HP EliteBook 840 G8",
+                    brand: "HP",
+                    model: "EliteBook 840 G8",
+                    category: "HP",
+                    price: 1850,
+                    quantity: 12,
+                    mainImage: "../images/collection-images/collection-hp.jpg"
+                },
+                {
+                    _id: "hp-102",
+                    name: "HP Spectre x360 14 Convertible",
+                    brand: "HP",
+                    model: "Spectre x360",
+                    category: "HP",
+                    price: 2400,
+                    quantity: 5,
+                    mainImage: "../images/site/fallback-laptop.jpg"
+                },
+                {
+                    _id: "hp-103",
+                    name: "HP ProBook 450 G9",
+                    brand: "HP",
+                    model: "ProBook 450 G9",
+                    category: "HP",
+                    price: 1550,
+                    quantity: 20,
+                    mainImage: "../images/collection-images/collection-hp.jpg"
+                },
+                {
+                    _id: "hp-104",
+                    name: "HP ZBook Fury 15 G8 Workstation",
+                    brand: "HP",
+                    model: "ZBook Fury 15",
+                    category: "HP",
+                    price: 3200,
+                    quantity: 3,
+                    mainImage: "../images/site/fallback-laptop.jpg"
+                }
+            ];
+
+            // Render Function
+            const renderProducts = (products) => {
+                if (resultsCount) {
+                    resultsCount.textContent = `Showing ${products.length} HP Products`;
+                }
+
+                if (!products || products.length === 0) {
+                    productGrid.innerHTML = `
+                        <div class="state-container">
+                            <i class="fa-solid fa-box-open state-icon"></i>
+                            <h3 class="state-title">No HP Laptops Found</h3>
+                            <p class="state-desc">There are currently no laptops available in this category. Please check back later or contact us on WhatsApp.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                productGrid.innerHTML = products.map(product => `
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            <span class="product-badge-qty">${product.quantity} in Stock</span>
+                            <img src="${product.mainImg || product.mainImage || product.image || '../images/site/fallback-laptop.jpg'}"
+                                 alt="${product.name}" 
+                                 onerror="this.src='../images/site/fallback-laptop.jpg'"
+                                 loading="lazy">
+                        </div>
+                        <div class="product-card-body">
+                            <div>
+                                <div class="product-brand-model">${product.brand} • ${product.model || ''}</div>
+                                <h3 class="product-name">${product.name}</h3>
+                            </div>
+                            <div>
+                                <div class="product-price-box">
+                                    <span class="price-currency">AED</span>
+                                    <span class="price-amount">${product.price ? product.price.toLocaleString() : 'N/A'}</span>
+                                </div>
+                                <a href="../product_detail.html?id=${product._id}" class="btn-view-product">
+                                    View Details <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            // Sorting Logic
+            const sortProducts = (criteria) => {
+                let sorted = [...hpProducts];
+                if (criteria === 'price-low') {
+                    sorted.sort((a, b) => a.price - b.price);
+                } else if (criteria === 'price-high') {
+                    sorted.sort((a, b) => b.price - a.price);
+                } else if (criteria === 'qty-high') {
+                    sorted.sort((a, b) => b.quantity - a.quantity);
+                }
+                renderProducts(sorted);
+            };
+
+            sortSelect.addEventListener('change', (e) => {
+                sortProducts(e.target.value);
+            });
+
+            // Fetch HP Products API Function
+           // Fetch HP Products API Function (Updated for Local Node.js + MongoDB)
+    const fetchHpProducts = async () => {
+        // Initial Loading State
+        productGrid.innerHTML = `
+            <div class="state-container">
+                <i class="fa-solid fa-circle-notch fa-spin state-icon"></i>
+                <h3 class="state-title">Loading HP Catalog...</h3>
+                <p class="state-desc">Fetching the latest available inventory.</p>
+            </div>
+        `;
+
+        try {
+            // Yahan http://localhost:5000 add kiya aur category 'hp' rakhi
+            const response = await fetch('http://localhost:5000/api/products?category=hp');
+            
+            if (response.ok) {
+                const result = await response.json();
+                // Backend response structure ke mutabiq result.data ya result array uthayein
+                const products = result.data || result || [];
+                hpProducts = products.length > 0 ? products : demoHpProducts;
+            } else {
+                hpProducts = demoHpProducts;
+            }
+        } catch (error) {
+            console.log('Backend API connection error. Loading demo catalog.');
+            hpProducts = demoHpProducts;
+        }
+
+        renderProducts(hpProducts);
+    };
+
+    fetchHpProducts();
+        });
+    </script>
+</body>
+</html>
