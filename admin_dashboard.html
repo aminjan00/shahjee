@@ -553,374 +553,375 @@
     </div>
 
     <!-- JavaScript Logic -->
-   <!-- JavaScript Logic with Real MongoDB + Cloudinary Backend Integration -->
-    <script>
-        // Configuration Constants
-        const API_URL = "http://localhost:5000/api/products";
-        const BANNER_API_URL = "http://localhost:5000/api/banners";
+<!-- JavaScript Logic with Real MongoDB + Cloudinary Backend Integration -->
+<script>
+    // Configuration Constants (Updated with Live Railway Backend URL)
+    const API_URL = "https://shahjee-production-9193.up.railway.app/api/products";
+    const BANNER_API_URL = "https://shahjee-production-9193.up.railway.app/api/banners";
 
-        // Verified Cloudinary Credentials
-        const CLOUD_NAME = "ez2dqiwx";
-        const UPLOAD_PRESET = "laptop-products"; 
+    // Verified Cloudinary Credentials
+    const CLOUD_NAME = "ez2dqiwx";
+    const UPLOAD_PRESET = "laptop-products"; 
 
-        // Auth Check Guard
-        if (localStorage.getItem('adminLoggedIn') !== 'true') {
-            window.location.href = 'admin.html';
-        }
+    // Auth Check Guard
+    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+        window.location.href = 'admin.html';
+    }
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('adminLoggedIn');
-            localStorage.removeItem('adminToken');
-            window.location.href = 'admin.html';
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminToken');
+        window.location.href = 'admin.html';
+    });
+
+    let mainImageUrl = "";
+    let angleImageUrls = [];
+    let bannerUploadedUrl = "";
+    let currentCategoryFilter = "all";
+
+    /* --------------------------------------------------
+        Cloudinary Direct Image Upload + Auto-Compression
+    -------------------------------------------------- */
+    async function uploadToCloudinary(file) {
+        // Compress image to 1200px max width before uploading
+        const compressedFile = await new Promise((resolve) => {
+            if (!file.type.startsWith('image/')) return resolve(file);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = Math.round((height * MAX_WIDTH) / width);
+                        width = MAX_WIDTH;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) return resolve(file);
+                        resolve(new File([blob], file.name, { type: "image/jpeg" }));
+                    }, "image/jpeg", 0.75);
+                };
+                img.onerror = () => resolve(file);
+            };
+            reader.onerror = () => resolve(file);
         });
 
-        let mainImageUrl = "";
-        let angleImageUrls = [];
-        let bannerUploadedUrl = "";
-        let currentCategoryFilter = "all";
+        const formData = new FormData();
+        formData.append("file", compressedFile);
+        formData.append("upload_preset", UPLOAD_PRESET);
 
-        /* --------------------------------------------------
-           Cloudinary Direct Image Upload + Auto-Compression
-        -------------------------------------------------- */
-        async function uploadToCloudinary(file) {
-            // Compress image to 1200px max width before uploading
-            const compressedFile = await new Promise((resolve) => {
-                if (!file.type.startsWith('image/')) return resolve(file);
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement("canvas");
-                        const MAX_WIDTH = 1200;
-                        let width = img.width;
-                        let height = img.height;
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+            method: "POST",
+            body: formData
+        });
 
-                        if (width > MAX_WIDTH) {
-                            height = Math.round((height * MAX_WIDTH) / width);
-                            width = MAX_WIDTH;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        canvas.toBlob((blob) => {
-                            if (!blob) return resolve(file);
-                            resolve(new File([blob], file.name, { type: "image/jpeg" }));
-                        }, "image/jpeg", 0.75);
-                    };
-                    img.onerror = () => resolve(file);
-                };
-                reader.onerror = () => resolve(file);
-            });
-
-            const formData = new FormData();
-            formData.append("file", compressedFile);
-            formData.append("upload_preset", UPLOAD_PRESET);
-
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-                method: "POST",
-                body: formData
-            });
-
-            if (!res.ok) {
-                const errData = await res.json().catch(() => ({}));
-                console.error("Cloudinary Error Detail:", errData);
-                throw new Error(errData.error?.message || "Upload failed");
-            }
-
-            const data = await res.json();
-            return data.secure_url;
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            console.error("Cloudinary Error Detail:", errData);
+            throw new Error(errData.error?.message || "Upload failed");
         }
 
-        /* --------------------------------------------------
-           1. Image Preview & Upload Handlers
-        -------------------------------------------------- */
-        window.previewBannerImg = async function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        const data = await res.json();
+        return data.secure_url;
+    }
 
-            const previewBox = document.getElementById("bannerImgPreviewBox");
-            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading banner to Cloudinary...</p>`;
+    /* --------------------------------------------------
+        1. Image Preview & Upload Handlers
+    -------------------------------------------------- */
+    window.previewBannerImg = async function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-            try {
-                bannerUploadedUrl = await uploadToCloudinary(file);
-                previewBox.innerHTML = `<img src="${bannerUploadedUrl}" class="preview-img">`;
-            } catch (err) {
-                alert(`Banner Upload Failed: ${err.message}`);
-                previewBox.innerHTML = "";
-            }
+        const previewBox = document.getElementById("bannerImgPreviewBox");
+        previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading banner to Cloudinary...</p>`;
+
+        try {
+            bannerUploadedUrl = await uploadToCloudinary(file);
+            previewBox.innerHTML = `<img src="${bannerUploadedUrl}" class="preview-img">`;
+        } catch (err) {
+            alert(`Banner Upload Failed: ${err.message}`);
+            previewBox.innerHTML = "";
+        }
+    };
+
+    window.previewMainImg = async function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const previewBox = document.getElementById("mainImgPreviewBox");
+        previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading main image...</p>`;
+
+        try {
+            mainImageUrl = await uploadToCloudinary(file);
+            previewBox.innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
+        } catch (err) {
+            alert(`Main Image Upload Failed: ${err.message}`);
+            previewBox.innerHTML = "";
+        }
+    };
+
+    window.previewAngleImgs = async function(event) {
+        const files = Array.from(event.target.files);
+        if (files.length === 0) return;
+
+        angleImageUrls = [];
+        const previewBox = document.getElementById("angleImgsPreviewBox");
+        previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading ${files.length} images...</p>`;
+
+        try {
+            angleImageUrls = await Promise.all(files.map(file => uploadToCloudinary(file)));
+            previewBox.innerHTML = "";
+            angleImageUrls.forEach(url => {
+                previewBox.innerHTML += `<img src="${url}" class="preview-img">`;
+            });
+        } catch (err) {
+            alert(`Angle Images Upload Failed: ${err.message}`);
+            previewBox.innerHTML = "";
+        }
+    };
+
+    /* --------------------------------------------------
+        2. Banner Management (MongoDB Real API)
+    -------------------------------------------------- */
+    document.getElementById("bannerForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        if (!bannerUploadedUrl) {
+            alert("Please select and upload a banner image first!");
+            return;
+        }
+
+        const bannerData = {
+            imageUrl: bannerUploadedUrl,
+            linkUrl: document.getElementById("bTargetLink").value || "collection/allproducts.html"
         };
 
-        window.previewMainImg = async function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        try {
+            const res = await fetch(BANNER_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bannerData)
+            });
 
-            const previewBox = document.getElementById("mainImgPreviewBox");
-            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading main image...</p>`;
-
-            try {
-                mainImageUrl = await uploadToCloudinary(file);
-                previewBox.innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
-            } catch (err) {
-                alert(`Main Image Upload Failed: ${err.message}`);
-                previewBox.innerHTML = "";
+            if (res.ok) {
+                alert("Offer Banner Created Successfully!");
+                this.reset();
+                bannerUploadedUrl = "";
+                document.getElementById("bannerImgPreviewBox").innerHTML = "";
+                fetchBanners();
+            } else {
+                alert("Failed to save banner to database.");
             }
-        };
+        } catch (err) {
+            alert("Backend Connection Error! Check Railway server.");
+        }
+    });
 
-        window.previewAngleImgs = async function(event) {
-            const files = Array.from(event.target.files);
-            if (files.length === 0) return;
+    async function fetchBanners() {
+        try {
+            const res = await fetch(BANNER_API_URL);
+            if (!res.ok) return;
 
-            angleImageUrls = [];
-            const previewBox = document.getElementById("angleImgsPreviewBox");
-            previewBox.innerHTML = `<p style="font-size:0.8rem; color:#888;">Uploading ${files.length} images...</p>`;
+            const result = await res.json();
+            const tbody = document.getElementById("bannerTableBody");
+            tbody.innerHTML = "";
 
-            try {
-                angleImageUrls = await Promise.all(files.map(file => uploadToCloudinary(file)));
-                previewBox.innerHTML = "";
-                angleImageUrls.forEach(url => {
-                    previewBox.innerHTML += `<img src="${url}" class="preview-img">`;
-                });
-            } catch (err) {
-                alert(`Angle Images Upload Failed: ${err.message}`);
-                previewBox.innerHTML = "";
-            }
-        };
-
-        /* --------------------------------------------------
-           2. Banner Management (MongoDB Real API)
-        -------------------------------------------------- */
-        document.getElementById("bannerForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            if (!bannerUploadedUrl) {
-                alert("Please select and upload a banner image first!");
+            const banners = result.data || [];
+            if (banners.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px;">No Banners In Database</td></tr>`;
                 return;
             }
 
-            const bannerData = {
-                imageUrl: bannerUploadedUrl,
-                linkUrl: document.getElementById("bTargetLink").value || "collection/allproducts.html"
-            };
+            banners.forEach(b => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${b.imageUrl}" alt="Banner" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
+                        <td><a href="${b.linkUrl}" target="_blank" style="color:var(--color-dark-main); font-weight:700;">${b.linkUrl}</a></td>
+                        <td>
+                            <button class="btn-action btn-delete" onclick="deleteBanner('${b._id}')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        } catch (err) {
+            console.error("Fetch Banners Error:", err);
+        }
+    }
 
+    window.deleteBanner = async function(id) {
+        if (confirm("Are you sure you want to delete this offer banner?")) {
             try {
-                const res = await fetch(BANNER_API_URL, {
+                const res = await fetch(`${BANNER_API_URL}/${id}`, { method: "DELETE" });
+                if (res.ok) fetchBanners();
+            } catch (err) {
+                alert("Delete banner error");
+            }
+        }
+    };
+
+    /* --------------------------------------------------
+        3. Product Management (MongoDB Real API)
+    -------------------------------------------------- */
+    async function fetchProducts() {
+        try {
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
+            const tbody = document.getElementById("inventoryTableBody");
+
+            const res = await fetch(`${API_URL}?category=${currentCategoryFilter}`);
+            if (!res.ok) return;
+
+            const result = await res.json();
+            let products = result.data || [];
+
+            tbody.innerHTML = "";
+
+            if (searchQuery) {
+                products = products.filter(p => 
+                    p.title.toLowerCase().includes(searchQuery) || 
+                    (p.brand && p.brand.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            if (products.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-purple-gray);">No Laptops Found in Database</td></tr>`;
+                return;
+            }
+
+            products.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${p.mainImg || 'images/site/fallback-laptop.jpg'}" alt="${p.title}" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
+                        <td><strong>${p.title}</strong></td>
+                        <td><span class="badge-cat">${p.category}</span></td>
+                        <td style="font-weight:800;">AED ${parseFloat(p.price).toLocaleString()}</td>
+                        <td style="font-weight:700;">${p.quantity} Units</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-action btn-edit" onclick="editProduct('${p._id}', '${p.title}', '${p.brand}', '${p.category}', '${p.price}', '${p.quantity}', '${p.mainImg}', \`${p.desc || ''}\`)"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-action btn-delete" onclick="deleteProduct('${p._id}')"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        } catch (err) {
+            console.error("Fetch Products Error:", err);
+        }
+    }
+
+    window.setCategoryFilter = function(cat, btn) {
+        currentCategoryFilter = cat;
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        fetchProducts();
+    };
+
+    window.editProduct = function(id, title, brand, category, price, quantity, mainImg, desc) {
+        document.getElementById("editProductId").value = id;
+        document.getElementById("pCategory").value = category;
+        document.getElementById("pTitle").value = title;
+        document.getElementById("pBrand").value = brand;
+        document.getElementById("pPrice").value = price;
+        document.getElementById("pQty").value = quantity;
+        document.getElementById("pDesc").value = desc;
+
+        mainImageUrl = mainImg;
+        if (mainImageUrl) {
+            document.getElementById("mainImgPreviewBox").innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
+        }
+
+        document.getElementById("formHeading").textContent = "Edit Laptop Details";
+        document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-check"></i> Update Laptop Product`;
+    };
+
+    window.deleteProduct = async function(id) {
+        if (confirm("Are you sure you want to delete this laptop from MongoDB database?")) {
+            try {
+                const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+                if (res.ok) fetchProducts();
+            } catch (err) {
+                alert("Delete error");
+            }
+        }
+    };
+
+    document.getElementById("productForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        if (!mainImageUrl) {
+            alert("Please select and upload a main image!");
+            return;
+        }
+
+        const editId = document.getElementById("editProductId").value;
+        const productData = {
+            category: document.getElementById("pCategory").value,
+            category: document.getElementById("pCategory").value,
+            title: document.getElementById("pTitle").value.trim(),
+            brand: document.getElementById("pBrand").value.trim(),
+            price: parseFloat(document.getElementById("pPrice").value) || 0,
+            quantity: parseInt(document.getElementById("pQty").value) || 0,
+            mainImg: mainImageUrl,
+            angles: angleImageUrls,
+            desc: document.getElementById("pDesc").value.trim()
+        };
+
+        try {
+            let res;
+            if (editId) {
+                res = await fetch(`${API_URL}/${editId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                res = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(bannerData)
+                    body: JSON.stringify(productData)
                 });
-
-                if (res.ok) {
-                    alert("Offer Banner Created Successfully!");
-                    this.reset();
-                    bannerUploadedUrl = "";
-                    document.getElementById("bannerImgPreviewBox").innerHTML = "";
-                    fetchBanners();
-                } else {
-                    alert("Failed to save banner to database.");
-                }
-            } catch (err) {
-                alert("Backend Connection Error! Is node server.js running?");
             }
-        });
 
-        async function fetchBanners() {
-            try {
-                const res = await fetch(BANNER_API_URL);
-                if (!res.ok) return;
+            if (res.ok) {
+                alert(editId ? "Laptop Updated Successfully!" : "Laptop Saved to MongoDB Successfully!");
+                
+                this.reset();
+                document.getElementById("editProductId").value = "";
+                mainImageUrl = "";
+                angleImageUrls = [];
+                document.getElementById("mainImgPreviewBox").innerHTML = "";
+                document.getElementById("angleImgsPreviewBox").innerHTML = "";
+                document.getElementById("formHeading").textContent = "Add New Laptop";
+                document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-plus"></i> Save Laptop Product`;
 
-                const result = await res.json();
-                const tbody = document.getElementById("bannerTableBody");
-                tbody.innerHTML = "";
-
-                const banners = result.data || [];
-                if (banners.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px;">No Banners In Database</td></tr>`;
-                    return;
-                }
-
-                banners.forEach(b => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><img src="${b.imageUrl}" alt="Banner" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
-                            <td><a href="${b.linkUrl}" target="_blank" style="color:var(--color-dark-main); font-weight:700;">${b.linkUrl}</a></td>
-                            <td>
-                                <button class="btn-action btn-delete" onclick="deleteBanner('${b._id}')">
-                                    <i class="fa-solid fa-trash"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (err) {
-                console.error("Fetch Banners Error:", err);
+                fetchProducts();
+            } else {
+                alert("Failed to save product.");
             }
+        } catch (err) {
+            alert("Backend Connection Error!");
         }
+    });
 
-        window.deleteBanner = async function(id) {
-            if (confirm("Are you sure you want to delete this offer banner?")) {
-                try {
-                    const res = await fetch(`${BANNER_API_URL}/${id}`, { method: "DELETE" });
-                    if (res.ok) fetchBanners();
-                } catch (err) {
-                    alert("Delete banner error");
-                }
-            }
-        };
-
-        /* --------------------------------------------------
-           3. Product Management (MongoDB Real API)
-        -------------------------------------------------- */
-        async function fetchProducts() {
-            try {
-                const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
-                const tbody = document.getElementById("inventoryTableBody");
-
-                const res = await fetch(`${API_URL}?category=${currentCategoryFilter}`);
-                if (!res.ok) return;
-
-                const result = await res.json();
-                let products = result.data || [];
-
-                tbody.innerHTML = "";
-
-                if (searchQuery) {
-                    products = products.filter(p => 
-                        p.title.toLowerCase().includes(searchQuery) || 
-                        (p.brand && p.brand.toLowerCase().includes(searchQuery))
-                    );
-                }
-
-                if (products.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-purple-gray);">No Laptops Found in Database</td></tr>`;
-                    return;
-                }
-
-                products.forEach(p => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><img src="${p.mainImg || 'images/site/fallback-laptop.jpg'}" alt="${p.title}" onerror="this.src='images/site/fallback-laptop.jpg'"></td>
-                            <td><strong>${p.title}</strong></td>
-                            <td><span class="badge-cat">${p.category}</span></td>
-                            <td style="font-weight:800;">AED ${parseFloat(p.price).toLocaleString()}</td>
-                            <td style="font-weight:700;">${p.quantity} Units</td>
-                            <td>
-                                <div class="action-btns">
-                                    <button class="btn-action btn-edit" onclick="editProduct('${p._id}', '${p.title}', '${p.brand}', '${p.category}', '${p.price}', '${p.quantity}', '${p.mainImg}', \`${p.desc || ''}\`)"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button class="btn-action btn-delete" onclick="deleteProduct('${p._id}')"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (err) {
-                console.error("Fetch Products Error:", err);
-            }
-        }
-
-        window.setCategoryFilter = function(cat, btn) {
-            currentCategoryFilter = cat;
-            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            fetchProducts();
-        };
-
-        window.editProduct = function(id, title, brand, category, price, quantity, mainImg, desc) {
-            document.getElementById("editProductId").value = id;
-            document.getElementById("pCategory").value = category;
-            document.getElementById("pTitle").value = title;
-            document.getElementById("pBrand").value = brand;
-            document.getElementById("pPrice").value = price;
-            document.getElementById("pQty").value = quantity;
-            document.getElementById("pDesc").value = desc;
-
-            mainImageUrl = mainImg;
-            if (mainImageUrl) {
-                document.getElementById("mainImgPreviewBox").innerHTML = `<img src="${mainImageUrl}" class="preview-img">`;
-            }
-
-            document.getElementById("formHeading").textContent = "Edit Laptop Details";
-            document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-check"></i> Update Laptop Product`;
-        };
-
-        window.deleteProduct = async function(id) {
-            if (confirm("Are you sure you want to delete this laptop from MongoDB database?")) {
-                try {
-                    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-                    if (res.ok) fetchProducts();
-                } catch (err) {
-                    alert("Delete error");
-                }
-            }
-        };
-
-        document.getElementById("productForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            if (!mainImageUrl) {
-                alert("Please select and upload a main image!");
-                return;
-            }
-
-            const editId = document.getElementById("editProductId").value;
-            const productData = {
-                category: document.getElementById("pCategory").value,
-                title: document.getElementById("pTitle").value.trim(),
-                brand: document.getElementById("pBrand").value.trim(),
-                price: parseFloat(document.getElementById("pPrice").value) || 0,
-                quantity: parseInt(document.getElementById("pQty").value) || 0,
-                mainImg: mainImageUrl,
-                angles: angleImageUrls,
-                desc: document.getElementById("pDesc").value.trim()
-            };
-
-            try {
-                let res;
-                if (editId) {
-                    res = await fetch(`${API_URL}/${editId}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(productData)
-                    });
-                } else {
-                    res = await fetch(API_URL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(productData)
-                    });
-                }
-
-                if (res.ok) {
-                    alert(editId ? "Laptop Updated Successfully!" : "Laptop Saved to MongoDB Successfully!");
-                    
-                    this.reset();
-                    document.getElementById("editProductId").value = "";
-                    mainImageUrl = "";
-                    angleImageUrls = [];
-                    document.getElementById("mainImgPreviewBox").innerHTML = "";
-                    document.getElementById("angleImgsPreviewBox").innerHTML = "";
-                    document.getElementById("formHeading").textContent = "Add New Laptop";
-                    document.getElementById("saveBtn").innerHTML = `<i class="fa-solid fa-plus"></i> Save Laptop Product`;
-
-                    fetchProducts();
-                } else {
-                    alert("Failed to save product.");
-                }
-            } catch (err) {
-                alert("Backend Connection Error!");
-            }
-        });
-
-        // Initialize Data on Page Load
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchBanners();
-            fetchProducts();
-        });
-    </script>
+    // Initialize Data on Page Load
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchBanners();
+        fetchProducts();
+    });
+</script>
 </body>
 </html>
