@@ -8,16 +8,21 @@ connectDB();
 
 const app = express();
 
-// CORS configuration - Vercel aur dusre domains ko access allow karne ke liye
-app.use(cors({
-  origin: '*', // Agar specific domain karna ho toh yahan Vercel ka URL daal sakte ho
+// Global CORS Configuration
+const corsOptions = {
+  origin: '*', // Vercel, Railway, aur Localhost sab ke liye open hai
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Pre-flight requests ko allow karne ke liye
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// API Routes
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/banners', require('./routes/bannerRoutes'));
 
