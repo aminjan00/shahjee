@@ -8,8 +8,15 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+// CORS configuration - Vercel aur dusre domains ko access allow karne ke liye
+app.use(cors({
+  origin: '*', // Agar specific domain karna ho toh yahan Vercel ka URL daal sakte ho
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/banners', require('./routes/bannerRoutes'));
